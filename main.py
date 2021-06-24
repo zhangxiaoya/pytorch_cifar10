@@ -108,7 +108,12 @@ if __name__ == "__main__":
     # define network
 
     net = LeNet()
+    net = VGG("VGG19")
     net.to(device)
+    
+    if device == "cuda":
+        net = torch.nn.DataParallel(net)
+        cudnn.benchmark = True
 
     creterion = nn.CrossEntropyLoss()
     optimizer = optim.SGD(net.parameters(), lr= learning_rate, momentum=0.9, weight_decay=5e-4)
